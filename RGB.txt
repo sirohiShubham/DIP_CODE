@@ -1,0 +1,28 @@
+import os
+import numpy as np
+import cv2
+
+path = r'C:\Users\Shubham\Pictures'
+image_path = 'sirohi.jpg'
+
+original_image = cv2.imread(os.path.join(path , image_path)) #extracting image
+cv2.imshow(image_path, original_image)
+print(original_image.shape)
+X, Y, Z = original_image.shape[0], original_image.shape[1], original_image.shape[2]
+
+blue_image = np.zeros([X, Y, Z], dtype = np.uint8) #initializing blue image
+green_image = np.zeros([X, Y, Z], dtype = np.uint8) #initializing green image
+red_image = np.zeros([X, Y, Z], dtype = np.uint8) #initializing red image
+
+seperate_images = [blue_image, green_image, red_image]
+for x, y in zip(seperate_images, range(Z)):
+    x[:, :, y] = original_image[:, :, y] #taking each channel at a atime
+    attach = str(y) + '.jpg'
+    cv2.imwrite(os.path.join(path , attach),x)
+    
+cv2.imshow('Blue Image', blue_image) #final output
+cv2.imshow('Green Image', green_image)#final output
+cv2.imshow('Red Image', red_image)#final output
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
